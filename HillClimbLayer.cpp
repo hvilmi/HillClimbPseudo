@@ -9,6 +9,7 @@
 #include "HillClimbLayer.h"
 #include "HillClimbUtility.h"
 #include "HillClimbRoad.h"
+#include "HillClimbCar.h"
 // Add missing includes here.
 
 namespace hillclimb {
@@ -38,6 +39,7 @@ namespace hillclimb {
         this->addChild(this->carSprite, 0);
     
         //Initialize car field here. Arguments: carStartX, carStartY, spriteScale
+        car = std::make_shared<HillClimbCar>(carStartX, carStartY, spriteScale);
         road = std::make_shared<HillClimbRoad>(winWidth, winHeight);
         
         this->generateRoadParts();
@@ -63,14 +65,13 @@ namespace hillclimb {
             return true;
         return false;
     }
-
+    
     void HillClimbLayer::generateRoadParts() {
         int MIN_ROAD_SIZE = 2;
         int partCount = road->getPartCount();
         std::vector<Coordinates> partCoords = road->getPartCoords();
      
         if (partCount < MIN_ROAD_SIZE) {
-            return;
         }
 
 
