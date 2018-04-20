@@ -2,10 +2,13 @@
 #include <map>
 #include <chrono>
 #include <iostream>
+#include <vector>
+#include <memory>
 
 #include "cocos2d.h"
 #include "HillClimbLayer.h"
 #include "HillClimbUtility.h"
+#include "HillClimbRoad.h"
 // Add missing includes here.
 
 namespace hillclimb {
@@ -35,7 +38,8 @@ namespace hillclimb {
         this->addChild(this->carSprite, 0);
     
         //Initialize car field here. Arguments: carStartX, carStartY, spriteScale
-        //Initialize road field here. Arguments: winWidth, winHeight
+        road = std::make_shared<HillClimbRoad>(winWidth, winHeight);
+        
         this->generateRoadParts();
 
         auto eventListener = cocos2d::EventListenerKeyboard::create();
@@ -61,22 +65,26 @@ namespace hillclimb {
     }
 
     void HillClimbLayer::generateRoadParts() {
-        //MIN_ROAD_SIZE = 2
-        //get part count of road
-        //get part coordinate pairs of road
-    
-        //if partCount < MIN_ROAD_SIZE
-            //return
+        int MIN_ROAD_SIZE = 2;
+        int partCount = road->getPartCount();
+        std::vector<Coordinates> partCoords = road->getPartCoords();
+     
+        if (partCount < MIN_ROAD_SIZE) {
+            return;
+        }
+
 
         auto drawNode = cocos2d::DrawNode::create();
         drawNode->setName("drawNode");
-        /*Loop through partCoordPairs:
-            beginCoords = partCoordPair at current index
-            endCoords = partCoordPair at current index + 1
-            drawNode->drawLine(cocos2d::Point(x of beginCoords, y of beginCoords),
-            cocos2d::Point(x of endCoords, y of endCoords),
-            cocos2d::Color4F::WHITE);
-        */
+        for (int i=0;i < partCount - 1; i++) {
+            Coordinates beginCoords = partCoords[i];
+            Coordinates endCoords = partCoords[i+1];
+            drawNode->drawLine(cocos2d::Point(beginCoords.x, beginCoords.y),
+                               cocos2d::Point(endCoords.x, endCoords.y),
+                               cocos2d::Color4F::WHITE);
+            
+            
+        }
         this->addChild(drawNode);
     }
 

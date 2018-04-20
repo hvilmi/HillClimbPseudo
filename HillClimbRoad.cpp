@@ -1,42 +1,63 @@
-/* Includes
+#include "HillClimbRoad.h"
+#include "HillClimbUtility.h"
 
-namespace
+namespace hillclimb {
 
-   ROAD_LENGHT_FACTOR = choose some road length factor
+   const double ROAD_LENGHT_FACTOR = 5;//Should change later
 
-   HillClimbRoad constructor
-
-   function getPartCount
-
-   function getPartCoords
-
-   function addPart
-
-   function calculateNewPartX {
-       randomize length of the new part using some factor
+   HillClimbRoad::HillClimbRoad(double winWidth, double winHeight) {
+       this->addPart(0, winHeight/2);
+       this->addPart(winWidth/4, winHeight/2 + 200);
+   
    }
 
-   function calculateNewPartY {
-       randomize y position of the end point of the new part
+   int HillClimbRoad::getPartCount() const {
+       return static_cast<int>(partCoords.size());
    }
 
-   function generatePartsAhead {
-      generate parts as many as MAX_PART_COUNT - currentPartCount
+   std::vector<Coordinates> HillClimbRoad::getPartCoords() {
+       return partCoords;
    }
 
-   deletePartsBehind() {
-      delete parts whose x < -DEFAULT_ROAD_LENGTH * ROAD_LENGTH_FACTOR
+   void HillClimbRoad::addPart(double x, double y) {
+       Coordinates partCoord = {
+           .x = x,
+           .y = y
+       };
+       partCoords.push_back(partCoord);
+   
    }
 
-   move(x) {
-       move the x's of parts
-       deletePartsBehind
-       generatePartsAhead
+   double HillClimbRoad::calculateNewPartX(double prevPartX) {
+       //randomize length of the new part using some factor
+       double i = 0;
+       return i;
    }
 
-   reset
-       clear partCoords
-       add two horizontal parts
-       generatePartsAhead
+
+   double HillClimbRoad::calculateNewPartY() {
+       //randomize y position of the end point of the new part
+       return 0;
    }
-*/
+
+   void HillClimbRoad::generatePartsAhead() {
+      //generate parts as many as MAX_PART_COUNT - currentPartCount
+   }
+
+   void HillClimbRoad::deletePartsBehind() {
+       
+   }
+
+   void HillClimbRoad::move(double x) {
+       //move the x's of parts
+       //deletePartsBehind
+       //generatePartsAhead
+   }
+
+   void HillClimbRoad::reset() {
+       //clear partCoords
+       //add two horizontal parts
+       //generatePartsAhead
+   }
+
+}
