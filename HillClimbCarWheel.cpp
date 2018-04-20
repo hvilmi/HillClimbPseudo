@@ -7,6 +7,7 @@
 
 namespace hillclimb {
         CarWheel::CarWheel(double x_offset, double y_offset, double radius) {
+            //TODO: Implement calculating OFFSET, OFFSET_ANGLE etc from given values.
             
         }
         
@@ -23,6 +24,9 @@ namespace hillclimb {
         }
         
         void CarWheel::updateState(int throttle, Coordinates carPos, double carAngle, HillClimbRoad road) {
+            this->updateForces(throttle);
+            this->updateRoadPartsTouching(road);
+            
             
         }
         

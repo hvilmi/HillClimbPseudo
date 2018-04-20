@@ -16,6 +16,9 @@ namespace hillclimb {
     
     class CarWheel {
     public:
+        //x_offset = -57.0 | 58
+        //y_offset = -43
+        //radius = 18
         CarWheel(double x_offset, double y_offset, double radius);
         
         double getForceX() const;

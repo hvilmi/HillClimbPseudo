@@ -1,4 +1,6 @@
 #include <vector>
+#include <cmath>
+#include <iostream>
 
 #include "HillClimbCar.h"
 #include "HillClimbCarWheel.h"
@@ -12,7 +14,31 @@ namespace hillclimb {
     
     }
     
+    void HillClimbCar::update(HillClimbRoad road, double dt) {
+        /*
+        update road parts touching
+        update wheels
+        update angular acceleration
+        update angular velocity
+        update angle
+        update accelerations
+        update velocity x
+        update velocity y
+        update pos y
+        */
+        this->updateRoadPartsTouching();
+        this->updateWheels(road);
+        this->updateAngularVelocity(dt);
+        this->updateAngle(dt);
+        this->updateAccelerations(dt);
+        this->updateVelocityX(dt);
+        this->updateVelocityY(dt);
+        this->updatePosY(dt);
+    }
+    
     void HillClimbCar::updateThrottle(double dthrottle) {
+        std::cout << "Throttle " << throttle << std::endl;
+        this->throttle += dthrottle;
         
     }
         
@@ -21,7 +47,8 @@ namespace hillclimb {
     }
         
     double HillClimbCar::getTransitionX(double dt) const {
-        return this->X_POS;
+        std::cout << "X Transition: " << this->v_x * dt << std::endl;
+        return this->v_x * dt;
     }
         
     double HillClimbCar::getAngle() const {
@@ -45,21 +72,27 @@ namespace hillclimb {
 
     void HillClimbCar::updateVelocityX(double dt) {
         
+        
+        this->v_x += this->a_x * dt;
+        
     }
 
     void HillClimbCar::updatePosY(double dt) {
+        this->y = this->v_y * dt;
         
     }
 
     void HillClimbCar::updateVelocityY(double dt) {
+        this->v_y += this->a_y * dt;
         
     }
 
     void HillClimbCar::updateAngle(double dt) {
-        
+        this->angle += this->v_ang * dt;
     }
 
     void HillClimbCar::updateAngularVelocity(double dt) {
+        this->v_ang += this->a_ang * dt;
         
     }
 
@@ -96,6 +129,13 @@ namespace hillclimb {
     }
 
     void HillClimbCar::updateRoadPartsTouching() {
+        
+        this->roadPartsTouching.empty();
+        std::vector<RoadPartTouching> leftWheelRoadParts = this->leftWheel->getRoadPartsTouching();
+        this->roadPartsTouching.insert(this->roadPartsTouching.end(), leftWheelRoadParts.begin(), leftWheelRoadParts.end());
+        
+        std::vector<RoadPartTouching> rightWheelRoadParts = this->rightWheel->getRoadPartsTouching();
+        this->roadPartsTouching.insert(this->roadPartsTouching.end(), rightWheelRoadParts.begin(), leftWheelRoadParts.end());
         
         //clear roadPartsTouching
         //combine roadPaRoad partrtsTouching of leftWheel and rightWheel into roadPartsTouching of car

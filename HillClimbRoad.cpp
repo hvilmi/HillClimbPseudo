@@ -15,7 +15,7 @@ namespace hillclimb {
    }
 
    int HillClimbRoad::getPartCount() const {
-       std::cout << "Part count: " << static_cast<int>(partCoords.size()) << std::endl; 
+
        return static_cast<int>(partCoords.size());
    }
 
@@ -64,10 +64,20 @@ namespace hillclimb {
    }
 
    void HillClimbRoad::deletePartsBehind() {
+       for (int i = 0; i < this->getPartCount()-1; i++) {
+           if (this->partCoords[i+1].x < 0) {
+               partCoords.erase(partCoords.begin() + i);
+           }
+       }
        
    }
 
    void HillClimbRoad::move(double x) {
+       for (auto& coords: this->partCoords) {
+           coords.x -= x;
+       }
+       this->deletePartsBehind();
+       this->generatePartsAhead();
        //move the x's of parts
        //deletePartsBehind
        //generatePartsAhead

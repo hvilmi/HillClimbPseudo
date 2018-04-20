@@ -13,7 +13,7 @@ namespace hillclimb {
     public:
         HillClimbCar(double x, double y, double scale);
         
-        //update(road, dt)
+        void update(HillClimbRoad road, double dt);
         void updateThrottle(double dthrottle);
         double getPositionY() const;
         double getTransitionX(double dt) const;

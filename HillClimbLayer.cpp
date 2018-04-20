@@ -94,15 +94,35 @@ namespace hillclimb {
     }
 
     void HillClimbLayer::update(float dt) {
+        const double THROTTLE_CONST = 100;
+        
         cocos2d::Node::update(dt);
         if (isKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_RIGHT_ARROW)) {
+            car->updateThrottle(THROTTLE_CONST);
             //Speed the car up with the updateThrottle method
         } else if (isKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_LEFT_ARROW)) {
+            car->updateThrottle(-THROTTLE_CONST);
             //Put the brake on with the updateThrottle method
         } else {
+            car->updateThrottle(-(THROTTLE_CONST/2));
             //Slow the car down with the updateThrottle method
         }
 
+        double carTransition = car->getTransitionX(dt);
+        double carAngle = std::fmod(car->getAngle(), STRAIGHT_ANGLE);
+        
+        if (carTransition < THROTTLE_CONST || std::abs(carAngle) > 180) {
+            //Car has crashed or is reversing.
+            car->reset(road->Y_ROAD_START + 100);
+            road->reset();
+        }
+        else {
+            car->update(*road, dt);
+            road->move(car->getTransitionX(dt));
+        }
+        
+        
+        
         /*Get car transition
           Get car angle. Use std::fmod for it with STRAIGHT_ANGLE as divisor.
     
